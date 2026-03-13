@@ -1,0 +1,61 @@
+@startuml Cinemaabyss_Containers
+!include <C4/C4_Container>
+!include <C4/C4_Context>
+!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Container diagram for Cinemaabyss Streaming Service
+
+Person(user, "Пользователь", "Пользователь стримингового сервиса")
+Person(admin, "Администратор", "Администратор системы")
+
+System_Ext(payment_system, "Внешняя платежная система", "Обработка платежей по подписке")
+System_Ext(recommendation_system, "Внешняя рекомендательная система", "Формирование рекомендаций")
+
+System_Boundary(cinemaabyss, "Cinemaabyss") {
+    Container(proxy, "Proxy Service", "API Gateway", "Маршрутизация запросов между клиентами и backend-сервисами")
+    
+    Container(auth, "Управление пользователями и администраторами", "Сервис", "Регистрация, аутентификация и авторизация")
+    
+    Container(subscription, "Управление подпиской", "Сервис", "CRUD подписок, конфигуратор параметров подписки")
+    
+    Container(movies, "Movies Service", "Сервис", "CRUD для метаданных фильмов, рейтингов и жанров")
+    
+    Container(interaction, "Взаимодействие с пользователями", "Сервис", "Выбор фильма, оценки, избранное с учетом типа устройства")
+    
+    Container(events, "Events Service", "Обработчик событий", "Коммуникация между сервисами через Kafka")
+    
+    ContainerDb(movies_db, "Movies Database", "SQL/NoSQL", "Хранение метаданных фильмов, рейтингов, жанров")
+    ContainerDb(users_db, "Users Database", "SQL", "Хранение данных пользователей и администраторов")
+    ContainerDb(subscription_db, "Subscription Database", "SQL", "Хранение параметров подписок")
+    ContainerDb(interaction_db, "Interaction Database", "SQL/NoSQL", "Хранение оценок, избранного, предпочтений пользователя")
+    
+    Container(message_bus, "Message Bus", "Apache Kafka", "Шина событий для асинхронной коммуникации")
+}
+
+Rel(user, proxy, "HTTP/HTTPS", "Взаимодействие с сервисом")
+Rel(admin, proxy, "HTTP/HTTPS", "Управление контентом")
+
+Rel(proxy, auth, "HTTP/REST/gRPC", "Аутентификация запросов")
+Rel(proxy, subscription, "HTTP/REST/gRPC", "Управление подпиской")
+Rel(proxy, movies, "HTTP/REST/gRPC", "Запросы к фильмам")
+Rel(proxy, interaction, "HTTP/REST/gRPC", "Взаимодействие с контентом")
+
+Rel(auth, users_db, "SQL", "Чтение/запись данных")
+Rel(subscription, subscription_db, "SQL", "Чтение/запись данных")
+Rel(movies, movies_db, "SQL/NoSQL", "Чтение/запись данных")
+Rel(interaction, interaction_db, "SQL/NoSQL", "Чтение/запись данных")
+
+Rel(interaction, events, "Kafka Producer", "Публикация событий (просмотр, оценка, добавление)")
+Rel(movies, events, "Kafka Producer", "Публикация событий фильмов")
+Rel(auth, events, "Kafka Producer", "Публикация событий пользователей (регистрация, вход)")
+Rel(subscription, events, "Kafka Producer", "Публикация событий платежей")
+
+Rel(events, message_bus, "Чтение/запись", "Обработка событий")
+Rel(message_bus, recommendation_system, "Kafka/API", "Передача данных для рекомендаций")
+Rel(message_bus, payment_system, "Kafka/API", "Передача событий платежей")
+
+Rel(subscription, payment_system, "API", "Инициирование платежей")
+Rel(recommendation_system, proxy, "API", "Передача рекомендаций")
+
+SHOW_LEGEND()
+@enduml
