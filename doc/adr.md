@@ -1,6 +1,3 @@
-## Изучите [README.md](.\README.md) файл и структуру проекта.
-
-# Задание 1
 
 ### 1. Описание функциональности приложения
 
@@ -53,61 +50,4 @@
     - контекст: Платежная система
     - контекст: Рекомендательная система
 
-[Диаграмма контейнеров](https://github.com/rusjiu-dev/architecture-cinemaabyss/tree/cinema/doc/arch_containers_C4.puml)
-
-# Задание 2
-
-### 1. Proxy
-- После реализации запустите postman тесты - они все должны быть зеленые (кроме events).
-
-[Результаты тестов](https://github.com/rusjiu-dev/architecture-cinemaabyss/blob/cinema/doc/Postman_task_2_1.png)
-
-- Отправьте запросы к API Gateway:
-   ```bash
-   curl http://localhost:8000/api/movies
-   ```
-
-[Ответ](https://github.com/rusjiu-dev/architecture-cinemaabyss/blob/cinema/doc/curl.png)
-
-- Протестируйте постепенный переход, изменив переменную окружения MOVIES_MIGRATION_PERCENT в файле docker-compose.yml.
-
-[MOVIES_MIGRATION_PERCENT: "90"](https://github.com/rusjiu-dev/architecture-cinemaabyss/blob/cinema/doc/migration_rate_90.png)
-
-### 2. Kafka
-Необходимые тесты для проверки этого API вызываются при запуске npm run test:local из папки tests/postman 
-
-[Результаты тестов](https://github.com/rusjiu-dev/architecture-cinemaabyss/blob/cinema/doc/task2_tests.png)
-
-Приложите скриншот тестов и скриншот состояния топиков Kafka из UI http://localhost:8090 
-
-[Kafka topics](https://github.com/rusjiu-dev/architecture-cinemaabyss/blob/cinema/doc/task2_topics.png)
-
-# Задание 3
-
-### CI/CD
-
-Как только сборка отработает и в github registry появятся ваши образы, можно переходить к блоку настройки Kubernetes
-Успешным результатом данного шага является "зеленая" сборка и "зеленые" тесты
-
-[Сборка](https://github.com/rusjiu-dev/architecture-cinemaabyss/blob/cinema/doc/actions_build.png)
-
-[Тесты](https://github.com/rusjiu-dev/architecture-cinemaabyss/blob/cinema/doc/actions_tests.png)
-
-
-### Proxy в Kubernetes
-
-Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
-
-[Вызов api/movies](https://github.com/rusjiu-dev/architecture-cinemaabyss/blob/cinema/doc/task3_movies_get.png)
-
-[Логи event-service](https://github.com/rusjiu-dev/architecture-cinemaabyss/blob/cinema/doc/event_logs.png)
-
-# Задание 4
-
-приложите скриншот развертывания helm и вывода https://cinemaabyss.example.com/api/movies
-
-[Скрин helm deploy](https://github.com/rusjiu-dev/architecture-cinemaabyss/blob/cinema/doc/task4_helm.png)
-
-[Кластер статус](https://github.com/rusjiu-dev/architecture-cinemaabyss/blob/cinema/doc/task4_K8s_status.png)
-
-[Вывод запроса](https://github.com/rusjiu-dev/architecture-cinemaabyss/blob/cinema/doc/task4_curl.png) 
+[Диаграмма контейнеров](https://github.com/rusjiu-dev/)
